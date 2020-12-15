@@ -1,5 +1,6 @@
 import 'package:flutter_driver/flutter_driver.dart';
 import 'package:test/test.dart';
+import 'widgetHelper.dart';
 
 void main() {
   group('Fuel Screen', () {
@@ -14,15 +15,27 @@ void main() {
     final currencyDropdown = find.byValueKey('currencyDropdown');
 
     FlutterDriver driver;
+    WidgetHelper widgetHelper;
+
+    Future<void> enterTextall(String text) async {
+      await widgetHelper.enterText(distanceField, text);
+      await widgetHelper.enterText(distancePerUnitField, text);
+      await widgetHelper.enterText(priceField, text);
+    }
 
     setUpAll(() async {
       driver = await FlutterDriver.connect();
+      widgetHelper = WidgetHelper(driver);
     });
 
     tearDownAll(() async {
       if (driver != null) {
         driver.close();
       }
+    });
+
+    setUp(() async {
+      await enterTextall('');
     });
 
     test('Text fields initialize as empty', () async {
@@ -34,12 +47,9 @@ void main() {
 
     test('Submit calculates correctly', () async {
       // Arrange.
-      await driver.tap(distanceField);
-      await driver.enterText('123');
-      await driver.tap(distancePerUnitField);
-      await driver.enterText('15');
-      await driver.tap(priceField);
-      await driver.enterText('1.65');
+      await widgetHelper.enterText(distanceField, '123');
+      await widgetHelper.enterText(distancePerUnitField, '15');
+      await widgetHelper.enterText(priceField, '1.65');
 
       //Act.
       await driver.tap(submitButton);
@@ -51,12 +61,7 @@ void main() {
 
     test('Reset clears all fields', () async {
       // Arrange.
-      await driver.tap(distanceField);
-      await driver.enterText('1');
-      await driver.tap(distancePerUnitField);
-      await driver.enterText('1');
-      await driver.tap(priceField);
-      await driver.enterText('1.0');
+      await enterTextall('9');
 
       //Act.
       await driver.tap(resetButton);
@@ -73,6 +78,11 @@ void main() {
     });
 
     Future<void> checkCurrency(String currency) async {
+      // Arrange.
+      await widgetHelper.enterText(distanceField, '123');
+      await widgetHelper.enterText(distancePerUnitField, '15');
+      await widgetHelper.enterText(priceField, '1.65');
+
       //Act.
       await driver.tap(currencyDropdown);
       await driver.tap(find.text(currency));
@@ -83,19 +93,111 @@ void main() {
       expect(text, contains(currency));
     }
 
-    test('Currency drop down selection affects result', () async {
-      // Arrange.
-      await driver.tap(distanceField);
-      await driver.enterText('123');
-      await driver.tap(distancePerUnitField);
-      await driver.enterText('15');
-      await driver.tap(priceField);
-      await driver.enterText('1.65');
-
+    test('Currency selection affects result (Euro)', () async {
       // Assert.
       await checkCurrency('Euro');
+    });
+
+    test('Currency selection affects result (Dollars)', () async {
+      // Assert.
       await checkCurrency('Dollars');
+    });
+
+    test('Currency selection affects result (Pounds)', () async {
+      // Assert.
       await checkCurrency('Pounds');
+    });
+
+    test('Submit button is initially disabled', () async {
+      //Assert.
+      var isEnabled = await widgetHelper.isEnabled(submitButton);
+      expect(isEnabled, false);
+    });
+
+    test('Submit button is disabled if any field is empty (distanceField)',
+        () async {
+      // Arrange.
+      await enterTextall('9');
+
+      // Act
+      await widgetHelper.enterText(distanceField, '');
+
+      //Assert.
+      var isEnabled = await widgetHelper.isEnabled(submitButton);
+      expect(isEnabled, false);
+    });
+
+    test(
+        'Submit button is disabled if any field is empty (distancePerUnitField)',
+        () async {
+      // Arrange.
+      await enterTextall('9');
+
+      // Act
+      await widgetHelper.enterText(distancePerUnitField, '');
+
+      //Assert.
+      var isEnabled = await widgetHelper.isEnabled(submitButton);
+      expect(isEnabled, false);
+    });
+
+    test('Submit button is disabled if any field is empty (priceField)',
+        () async {
+      // Arrange.
+      await enterTextall('9');
+
+      // Act
+      await widgetHelper.enterText(priceField, '');
+
+      //Assert.
+      var isEnabled = await widgetHelper.isEnabled(submitButton);
+      expect(isEnabled, false);
+    });
+
+    test('Submit button is enabled when all fields are filled in', () async {
+      // Arrange.
+      await enterTextall('9');
+
+      //Assert.
+      var isEnabled = await widgetHelper.isEnabled(submitButton);
+      expect(isEnabled, true);
+    });
+
+    test('Reset button is initially disabled', () async {
+      //Assert.
+      var isEnabled = await widgetHelper.isEnabled(resetButton);
+      expect(isEnabled, false);
+    });
+
+    test('Reset button is enabled when any field is filled in (distanceField)',
+        () async {
+      // Arrange.
+      await widgetHelper.enterText(distanceField, '9');
+
+      //Assert.
+      var isEnabled = await widgetHelper.isEnabled(resetButton);
+      expect(isEnabled, true);
+    });
+
+    test(
+        'Reset button is enabled when any field is filled in (distancePerUnitField)',
+        () async {
+      // Arrange.
+      await widgetHelper.enterText(distancePerUnitField, '9');
+
+      //Assert.
+      var isEnabled = await widgetHelper.isEnabled(resetButton);
+      expect(isEnabled, true);
+    });
+
+    test('Reset button is enabled when any field is filled in (priceField)',
+        () async {
+      // Arrange.
+      await widgetHelper.enterText(priceField, '9');
+
+      //Assert.
+      var isEnabled = await widgetHelper.isEnabled(resetButton);
+      expect(isEnabled, true);
     });
   });
 }
