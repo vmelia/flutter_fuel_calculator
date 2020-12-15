@@ -155,7 +155,7 @@ void main() {
     });
 
     test('Submit button is enabled when all fields are filled in', () async {
-      // Arrange.
+      // Act.
       await enterTextall('9');
 
       //Assert.
@@ -171,7 +171,7 @@ void main() {
 
     test('Reset button is enabled when any field is filled in (distanceField)',
         () async {
-      // Arrange.
+      // Act.
       await widgetHelper.enterText(distanceField, '9');
 
       //Assert.
@@ -182,7 +182,7 @@ void main() {
     test(
         'Reset button is enabled when any field is filled in (distancePerUnitField)',
         () async {
-      // Arrange.
+      // Act.
       await widgetHelper.enterText(distancePerUnitField, '9');
 
       //Assert.
@@ -192,7 +192,7 @@ void main() {
 
     test('Reset button is enabled when any field is filled in (priceField)',
         () async {
-      // Arrange.
+      // Act.
       await widgetHelper.enterText(priceField, '9');
 
       //Assert.
