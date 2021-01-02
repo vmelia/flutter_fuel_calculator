@@ -1,26 +1,19 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:flutter_fuel_calculator/view_models/fuel_view_model.dart';
 
-class FuelScreen extends StatefulWidget {
-  @override
-  State<StatefulWidget> createState() => _FuelScreenState();
-}
-
-class _FuelScreenState extends State<FuelScreen> {
-  final _currencies = ['Euro', 'Dollars', 'Pounds'];
+class FuelScreen extends StatelessWidget {
   final double _formDistance = 5.0;
 
-  String _currency = 'Dollars';
-
-  TextEditingController distanceController = TextEditingController();
-  TextEditingController distancePerUnitController = TextEditingController();
-  TextEditingController priceController = TextEditingController();
-
-  String result = "";
-  bool canSubmit = false;
-  bool canReset = false;
+  final TextEditingController distanceController = TextEditingController();
+  final TextEditingController distancePerUnitController =
+      TextEditingController();
+  final TextEditingController priceController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
+    final viewModel = Provider.of<FuelViewModel>(context);
+
     var distanceField = TextField(
       key: Key('distanceField'),
       controller: distanceController,
@@ -34,9 +27,7 @@ class _FuelScreenState extends State<FuelScreen> {
       ),
       keyboardType: TextInputType.number,
       onChanged: (String value) {
-        setState(() {
-          _enableDisableButtons();
-        });
+        viewModel.distanceText = value;
       },
     );
     var distancePerUnitField = TextField(
@@ -52,9 +43,7 @@ class _FuelScreenState extends State<FuelScreen> {
       ),
       keyboardType: TextInputType.number,
       onChanged: (String value) {
-        setState(() {
-          _enableDisableButtons();
-        });
+        viewModel.distancePerUnitText = value;
       },
     );
     var priceField = TextField(
@@ -70,33 +59,27 @@ class _FuelScreenState extends State<FuelScreen> {
       ),
       keyboardType: TextInputType.number,
       onChanged: (String value) {
-        setState(() {
-          _enableDisableButtons();
-        });
+        viewModel.priceText = value;
       },
     );
     var currencyDropdown = DropdownButton<String>(
       key: Key('currencyDropdown'),
-      items: _currencies.map((String value) {
+      items: viewModel.currencies.map((String value) {
         return DropdownMenuItem<String>(
           value: value,
           child: Text(value),
         );
       }).toList(),
-      value: _currency,
+      value: viewModel.currency,
       onChanged: (String value) {
-        setState(() {
-          _currency = value;
-        });
+        viewModel.currency = value;
       },
     );
     var submitButton = RaisedButton(
       key: Key('submitButton'),
-      onPressed: canSubmit
+      onPressed: viewModel.canSubmit
           ? () {
-              setState(() {
-                result = _calculate();
-              });
+              viewModel.submit();
             }
           : null,
       color: Theme.of(context).primaryColorDark,
@@ -108,11 +91,12 @@ class _FuelScreenState extends State<FuelScreen> {
     );
     var resetButton = RaisedButton(
       key: Key('resetButton'),
-      onPressed: canReset
+      onPressed: viewModel.canReset
           ? () {
-              setState(() {
-                _reset();
-              });
+              viewModel.reset();
+              distanceController.text = '';
+              distancePerUnitController.text = '';
+              priceController.text = '';
             }
           : null,
       color: Theme.of(context).buttonColor,
@@ -143,7 +127,7 @@ class _FuelScreenState extends State<FuelScreen> {
             child: priceField,
           ),
           Text(
-            result,
+            viewModel.totalCostText,
             key: Key('resultText'),
           ),
           currencyDropdown,
@@ -161,34 +145,5 @@ class _FuelScreenState extends State<FuelScreen> {
         ]),
       ),
     );
-  }
-
-  void _enableDisableButtons() {
-    canSubmit = distanceController.text.isNotEmpty &&
-        distancePerUnitController.text.isNotEmpty &&
-        priceController.text.isNotEmpty;
-
-    canReset = distanceController.text.isNotEmpty ||
-        distancePerUnitController.text.isNotEmpty ||
-        priceController.text.isNotEmpty;
-  }
-
-  String _calculate() {
-    var _distance = double.parse(distanceController.text);
-    var _distancePerUnit = double.parse(distancePerUnitController.text);
-    var _price = double.parse(priceController.text);
-
-    var totalCost = _distance / _distancePerUnit * _price;
-    return 'Total cost = ' + totalCost.toStringAsFixed(2) + ' ' + _currency;
-  }
-
-  void _reset() {
-    distanceController.text = '';
-    distancePerUnitController.text = '';
-    priceController.text = '';
-    setState(() {
-      _enableDisableButtons();
-      result = '';
-    });
   }
 }

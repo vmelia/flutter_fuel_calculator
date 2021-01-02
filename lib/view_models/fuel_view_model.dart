@@ -3,12 +3,14 @@ import 'package:flutter/material.dart';
 class FuelViewModel with ChangeNotifier {
   final currencies = ['Euro', 'Dollars', 'Pounds'];
   double totalCost = 0.0;
-  bool canSubmit;
-  bool canReset;
+  String totalCostText = '';
+  bool canSubmit = false;
+  bool canReset = true;
 
   String _distanceText;
   String _distancePerUnitText;
   String _priceText;
+  String _currency;
 
   FuelViewModel() {
     _distanceText = "";
@@ -20,29 +22,29 @@ class FuelViewModel with ChangeNotifier {
   String get distanceText => _distanceText;
   set distanceText(String value) {
     _distanceText = value;
-    _calculate();
+    checkButtons();
   }
 
   String get distancePerUnitText => _distancePerUnitText;
   set distancePerUnitText(String value) {
     _distancePerUnitText = value;
-    _calculate();
+    checkButtons();
   }
 
   String get priceText => _priceText;
   set priceText(String value) {
     _priceText = value;
-    _calculate();
+    checkButtons();
+  }
+
+  String get currency => _currency;
+  set currency(String value) {
+    _currency = value;
+    checkButtons();
   }
 
   // Functions.
-  void _calculate() {
-    var _distance = double.parse(distanceText);
-    var _distancePerUnit = double.parse(distancePerUnitText);
-    var _price = double.parse(priceText);
-
-    totalCost = calculateCost(_distance, _distancePerUnit, _price);
-
+  void checkButtons() {
     canSubmit = distanceText.isNotEmpty &&
         distancePerUnitText.isNotEmpty &&
         priceText.isNotEmpty;
@@ -54,12 +56,25 @@ class FuelViewModel with ChangeNotifier {
     notifyListeners();
   }
 
+  void submit() {
+    var _distance = double.parse(distanceText);
+    var _distancePerUnit = double.parse(distancePerUnitText);
+    var _price = double.parse(priceText);
+
+    totalCost = calculateCost(_distance, _distancePerUnit, _price);
+    totalCostText = "Total cost = ${totalCost.toStringAsFixed(2)} $currency";
+
+    notifyListeners();
+  }
+
   void reset() {
     distanceText = "";
     distancePerUnitText = "";
     priceText = "";
-    
-    _calculate();
+    totalCost = 0.0;
+    totalCostText = '';
+
+    checkButtons();
   }
 
   double calculateCost(double distance, double distancePerUnit, double price) {

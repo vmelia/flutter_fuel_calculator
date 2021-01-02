@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'screens/fuelScreen.dart';
+import 'view_models/fuel_view_model.dart';
 
 void main() => runApp(new FlutterUiApp());
 
@@ -9,7 +11,8 @@ class FlutterUiApp extends StatelessWidget {
     return MaterialApp(
       title: "Trip Cost Calculator",
       theme: new ThemeData(primarySwatch: Colors.blue),
-      home: new FuelScreen(),
+      home: ChangeNotifierProvider(
+          create: (context) => FuelViewModel(), child: FuelScreen()),
     );
   }
 }
