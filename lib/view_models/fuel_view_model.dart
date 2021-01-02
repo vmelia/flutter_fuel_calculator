@@ -10,7 +10,7 @@ class FuelViewModel with ChangeNotifier {
   String _distanceText;
   String _distancePerUnitText;
   String _priceText;
-  String _currency;
+  String _currency = 'Pounds';
 
   FuelViewModel() {
     _distanceText = "";

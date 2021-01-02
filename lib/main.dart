@@ -12,7 +12,9 @@ class FlutterUiApp extends StatelessWidget {
       title: "Trip Cost Calculator",
       theme: new ThemeData(primarySwatch: Colors.blue),
       home: ChangeNotifierProvider(
-          create: (context) => FuelViewModel(), child: FuelScreen()),
+        create: (context) => FuelViewModel(),
+        child: FuelScreen(),
+      ),
     );
   }
 }
