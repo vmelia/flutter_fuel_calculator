@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import '../models/fuelCalculator.dart';
 
 class FuelScreen extends StatefulWidget {
   @override
@@ -20,8 +19,6 @@ class _FuelScreenState extends State<FuelScreen> {
   bool canSubmit = false;
   bool canReset = false;
 
-  var fuelCalculator = FuelCalculator();
-
   @override
   Widget build(BuildContext context) {
     var distanceField = TextField(
@@ -30,7 +27,7 @@ class _FuelScreenState extends State<FuelScreen> {
       decoration: InputDecoration(
         labelText: 'Distance',
         hintText: 'E.g., 123',
-        labelStyle: getTextStyle(context),
+        labelStyle: Theme.of(context).textTheme.headline6,
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(5.0),
         ),
@@ -48,7 +45,7 @@ class _FuelScreenState extends State<FuelScreen> {
       decoration: InputDecoration(
         labelText: 'Distance per Unit',
         hintText: 'E.g., 15',
-        labelStyle: getTextStyle(context),
+        labelStyle: Theme.of(context).textTheme.headline6,
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(5.0),
         ),
@@ -66,7 +63,7 @@ class _FuelScreenState extends State<FuelScreen> {
       decoration: InputDecoration(
         labelText: 'Price',
         hintText: 'E.g., 1.65',
-        labelStyle: getTextStyle(context),
+        labelStyle: Theme.of(context).textTheme.headline6,
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(5.0),
         ),
@@ -102,8 +99,8 @@ class _FuelScreenState extends State<FuelScreen> {
               });
             }
           : null,
-      color: getPrimaryColorDark(context),
-      textColor: getPrimaryColorLight(context),
+      color: Theme.of(context).primaryColorDark,
+      textColor: Theme.of(context).primaryColorLight,
       child: Text(
         'Submit',
         textScaleFactor: 1.5,
@@ -118,8 +115,8 @@ class _FuelScreenState extends State<FuelScreen> {
               });
             }
           : null,
-      color: getbuttonColor(context),
-      textColor: getPrimaryColorDark(context),
+      color: Theme.of(context).buttonColor,
+      textColor: Theme.of(context).primaryColorDark,
       child: Text(
         'Reset',
         textScaleFactor: 1.5,
@@ -181,8 +178,7 @@ class _FuelScreenState extends State<FuelScreen> {
     var _distancePerUnit = double.parse(distancePerUnitController.text);
     var _price = double.parse(priceController.text);
 
-    var totalCost =
-        fuelCalculator.calculateCost(_distance, _distancePerUnit, _price);
+    var totalCost = _distance / _distancePerUnit * _price;
     return 'Total cost = ' + totalCost.toStringAsFixed(2) + ' ' + _currency;
   }
 
@@ -195,20 +191,4 @@ class _FuelScreenState extends State<FuelScreen> {
       result = '';
     });
   }
-}
-
-TextStyle getTextStyle(BuildContext context) {
-  return Theme.of(context).textTheme.headline6;
-}
-
-Color getPrimaryColorLight(BuildContext context) {
-  return Theme.of(context).primaryColorLight;
-}
-
-Color getPrimaryColorDark(BuildContext context) {
-  return Theme.of(context).primaryColorDark;
-}
-
-Color getbuttonColor(BuildContext context) {
-  return Theme.of(context).buttonColor;
 }
