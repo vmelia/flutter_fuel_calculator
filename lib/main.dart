@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_fuel_calculator/screens/fuelScreen.dart';
+import 'package:flutter_fuel_calculator/view_models/fuel_view_model.dart';
 import 'package:provider/provider.dart';
-import 'screens/fuelScreen.dart';
-import 'view_models/fuel_view_model.dart';
 
 void main() => runApp(new FlutterUiApp());
 

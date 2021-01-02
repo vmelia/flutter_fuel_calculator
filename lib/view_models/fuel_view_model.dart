@@ -7,33 +7,33 @@ class FuelViewModel with ChangeNotifier {
   bool canSubmit = false;
   bool canReset = true;
 
-  String _distanceText;
-  String _distancePerUnitText;
-  String _priceText;
+  double _distance;
+  double _distancePerUnit;
+  double _price;
   String _currency = 'Pounds';
 
   FuelViewModel() {
-    _distanceText = "";
-    _distancePerUnitText = "";
-    _priceText = "";
+    _distance = 0.0;
+    _distancePerUnit = 0.0;
+    _price = 0.0;
   }
 
   // Settable values.
-  String get distanceText => _distanceText;
-  set distanceText(String value) {
-    _distanceText = value;
+  double get distance => _distance;
+  set distance(double value) {
+    _distance = value;
     checkButtons();
   }
 
-  String get distancePerUnitText => _distancePerUnitText;
-  set distancePerUnitText(String value) {
-    _distancePerUnitText = value;
+  double get distancePerUnit => _distancePerUnit;
+  set distancePerUnit(double value) {
+    _distancePerUnit = value;
     checkButtons();
   }
 
-  String get priceText => _priceText;
-  set priceText(String value) {
-    _priceText = value;
+  double get price => _price;
+  set price(double value) {
+    _price = value;
     checkButtons();
   }
 
@@ -45,22 +45,18 @@ class FuelViewModel with ChangeNotifier {
 
   // Functions.
   void checkButtons() {
-    canSubmit = distanceText.isNotEmpty &&
-        distancePerUnitText.isNotEmpty &&
-        priceText.isNotEmpty;
+    canSubmit = distance > 0.0 &&
+        distancePerUnit > 0.0 &&
+        price > 0.0;
 
-    canReset = distanceText.isNotEmpty ||
-        distancePerUnitText.isNotEmpty ||
-        priceText.isNotEmpty;
+    canReset = distance > 0.0 ||
+        distancePerUnit > 0.0 ||
+        price > 0.0;
 
     notifyListeners();
   }
 
   void submit() {
-    var _distance = double.parse(distanceText);
-    var _distancePerUnit = double.parse(distancePerUnitText);
-    var _price = double.parse(priceText);
-
     totalCost = calculateCost(_distance, _distancePerUnit, _price);
     totalCostText = "Total cost = ${totalCost.toStringAsFixed(2)} $currency";
 
@@ -68,9 +64,9 @@ class FuelViewModel with ChangeNotifier {
   }
 
   void reset() {
-    distanceText = "";
-    distancePerUnitText = "";
-    priceText = "";
+    _distance = 0.0;
+    _distancePerUnit = 0.0;
+    _price = 0.0;
     totalCost = 0.0;
     totalCostText = '';
 

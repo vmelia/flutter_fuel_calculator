@@ -19,21 +19,21 @@ class FuelScreen extends StatelessWidget {
     var distanceField = EditStringWidget(
       key: Key('distanceField'),
       controller: distanceController,
-      onChanged: (value) => viewModel.distanceText = value,
+      onChanged: (value) => viewModel.distance = double.parse(value),
       labelText: 'Distance',
       hintText: 'E.g., 123',
     );
     var distancePerUnitField = EditStringWidget(
       key: Key('distancePerUnitField'),
       controller: distancePerUnitController,
-      onChanged: (value) => viewModel.distancePerUnitText = value,
+      onChanged: (value) => viewModel.distancePerUnit = double.parse(value),
       labelText: 'Distance per Unit',
       hintText: 'E.g., 15',
     );
     var priceField = EditStringWidget(
       key: Key('priceField'),
       controller: priceController,
-      onChanged: (value) => viewModel.priceText = value,
+      onChanged: (value) => viewModel.price = double.parse(value),
       labelText: 'Price',
       hintText: 'E.g., 1.65',
     );
@@ -51,7 +51,7 @@ class FuelScreen extends StatelessWidget {
         viewModel.currency = value;
       },
     );
-    
+
     var submitButton = ButtonWidget(
         key: Key('submitButton'),
         text: 'Submit',
