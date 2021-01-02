@@ -2,12 +2,13 @@ import 'package:flutter/material.dart';
 
 class ButtonWidget extends StatelessWidget {
   const ButtonWidget({
-    Key key,
+    @required this.controlKey,
     @required this.text,
     @required this.isEnabled,
     @required this.onPressed,
-  }) : super(key: key);
+  });
 
+  final Key controlKey;
   final String text;
   final bool Function() isEnabled;
   final VoidCallback onPressed;
@@ -15,6 +16,7 @@ class ButtonWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return RaisedButton(
+      key: controlKey,
       onPressed: isEnabled() ? onPressed : null,
       color: Theme.of(context).primaryColorDark,
       textColor: Theme.of(context).primaryColorLight,

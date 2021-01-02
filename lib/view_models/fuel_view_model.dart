@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 
 class FuelViewModel with ChangeNotifier {
   final currencies = ['Euro', 'Dollars', 'Pounds'];
-  double totalCost = 0.0;
+  double totalCost;
   String totalCostText = '';
   bool canSubmit = false;
-  bool canReset = true;
+  bool canReset = false;
 
   double _distance;
   double _distancePerUnit;
@@ -13,9 +13,9 @@ class FuelViewModel with ChangeNotifier {
   String _currency = 'Pounds';
 
   FuelViewModel() {
-    _distance = 0.0;
-    _distancePerUnit = 0.0;
-    _price = 0.0;
+    _distance = null;
+    _distancePerUnit = null;
+    _price = null;
   }
 
   // Settable values.
@@ -45,13 +45,8 @@ class FuelViewModel with ChangeNotifier {
 
   // Functions.
   void checkButtons() {
-    canSubmit = distance > 0.0 &&
-        distancePerUnit > 0.0 &&
-        price > 0.0;
-
-    canReset = distance > 0.0 ||
-        distancePerUnit > 0.0 ||
-        price > 0.0;
+    canSubmit = distance != null && distancePerUnit != null && price != null;
+    canReset = distance != null || distancePerUnit != null || price != null;
 
     notifyListeners();
   }
@@ -64,9 +59,9 @@ class FuelViewModel with ChangeNotifier {
   }
 
   void reset() {
-    _distance = 0.0;
-    _distancePerUnit = 0.0;
-    _price = 0.0;
+    _distance = null;
+    _distancePerUnit = null;
+    _price = null;
     totalCost = 0.0;
     totalCostText = '';
 

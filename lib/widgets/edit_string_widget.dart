@@ -2,13 +2,14 @@ import 'package:flutter/material.dart';
 
 class EditStringWidget extends StatelessWidget {
   const EditStringWidget({
-    Key key,
+    @required this.controlKey,
     @required this.controller,
     @required this.onChanged,
     @required this.labelText,
     @required this.hintText,
-  }) : super(key: key);
+  });
 
+  final Key controlKey;
   final TextEditingController controller;
   final Function(String) onChanged;
   final String labelText;
@@ -17,6 +18,7 @@ class EditStringWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return TextField(
+      key: controlKey,
       controller: controller,
       decoration: InputDecoration(
         labelText: labelText,

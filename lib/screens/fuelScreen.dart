@@ -17,23 +17,23 @@ class FuelScreen extends StatelessWidget {
     final viewModel = Provider.of<FuelViewModel>(context);
 
     var distanceField = EditStringWidget(
-      key: Key('distanceField'),
+      controlKey: Key('distanceField'),
       controller: distanceController,
-      onChanged: (value) => viewModel.distance = double.parse(value),
+      onChanged: (value) => viewModel.distance = double.tryParse(value),
       labelText: 'Distance',
       hintText: 'E.g., 123',
     );
     var distancePerUnitField = EditStringWidget(
-      key: Key('distancePerUnitField'),
+      controlKey: Key('distancePerUnitField'),
       controller: distancePerUnitController,
-      onChanged: (value) => viewModel.distancePerUnit = double.parse(value),
+      onChanged: (value) => viewModel.distancePerUnit = double.tryParse(value),
       labelText: 'Distance per Unit',
       hintText: 'E.g., 15',
     );
     var priceField = EditStringWidget(
-      key: Key('priceField'),
+      controlKey: Key('priceField'),
       controller: priceController,
-      onChanged: (value) => viewModel.price = double.parse(value),
+      onChanged: (value) => viewModel.price = double.tryParse(value),
       labelText: 'Price',
       hintText: 'E.g., 1.65',
     );
@@ -53,13 +53,13 @@ class FuelScreen extends StatelessWidget {
     );
 
     var submitButton = ButtonWidget(
-        key: Key('submitButton'),
+        controlKey: Key('submitButton'),
         text: 'Submit',
         isEnabled: () => viewModel.canSubmit,
         onPressed: () => viewModel.submit());
 
     var resetButton = ButtonWidget(
-        key: Key('resetButton'),
+        controlKey: Key('resetButton'),
         text: 'Reset',
         isEnabled: () => viewModel.canReset,
         onPressed: () {
