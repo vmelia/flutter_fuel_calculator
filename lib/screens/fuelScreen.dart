@@ -90,7 +90,8 @@ class FuelScreen extends StatelessWidget {
             child: priceField,
           ),
           Text(
-            viewModel.totalCostText,
+            calculateResultText(viewModel.totalCost, viewModel.currency),
+            //"Total cost = ${viewModel.totalCost.toStringAsFixed(2)} $viewModel.currency",
             key: Key('resultText'),
           ),
           currencyDropdown,
@@ -109,4 +110,9 @@ class FuelScreen extends StatelessWidget {
       ),
     );
   }
+}
+
+String calculateResultText(double totalCost, String currency) {
+  if (totalCost == null || currency == null) return "";
+  return "Total cost = ${totalCost.toStringAsFixed(2)} $currency";
 }

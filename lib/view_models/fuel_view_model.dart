@@ -3,19 +3,19 @@ import 'package:flutter/material.dart';
 class FuelViewModel with ChangeNotifier {
   final currencies = ['Euro', 'Dollars', 'Pounds'];
   double totalCost;
-  String totalCostText = '';
   bool canSubmit = false;
   bool canReset = false;
 
   double _distance;
   double _distancePerUnit;
   double _price;
-  String _currency = 'Pounds';
+  String _currency;
 
   FuelViewModel() {
     _distance = null;
     _distancePerUnit = null;
     _price = null;
+    _currency = currencies.first;
   }
 
   // Settable values.
@@ -53,7 +53,6 @@ class FuelViewModel with ChangeNotifier {
 
   void submit() {
     totalCost = calculateCost(_distance, _distancePerUnit, _price);
-    totalCostText = "Total cost = ${totalCost.toStringAsFixed(2)} $currency";
 
     notifyListeners();
   }
@@ -63,7 +62,6 @@ class FuelViewModel with ChangeNotifier {
     _distancePerUnit = null;
     _price = null;
     totalCost = 0.0;
-    totalCostText = '';
 
     checkButtons();
   }
