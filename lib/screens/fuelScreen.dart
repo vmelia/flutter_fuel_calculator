@@ -25,33 +25,40 @@ class FuelScreen extends StatelessWidget {
         child: Column(children: <Widget>[
           Padding(
             padding: EdgeInsets.only(top: _formDistance, bottom: _formDistance),
-            child: EditStringWidget(
-              controlKey: Key('distanceField'),
-              controller: distanceController,
-              onChanged: (value) => viewModel.distance = double.tryParse(value),
-              labelText: 'Distance',
-              hintText: 'E.g., 123',
+            child: Consumer<FuelViewModel>(
+              builder: (_, viewModel, __) => EditStringWidget(
+                controlKey: Key('distanceField'),
+                controller: distanceController,
+                onChanged: (value) =>
+                    viewModel.distance = double.tryParse(value),
+                labelText: 'Distance',
+                hintText: 'E.g., 123',
+              ),
             ),
           ),
           Padding(
             padding: EdgeInsets.only(top: _formDistance, bottom: _formDistance),
-            child: EditStringWidget(
-              controlKey: Key('distancePerUnitField'),
-              controller: distancePerUnitController,
-              onChanged: (value) =>
-                  viewModel.distancePerUnit = double.tryParse(value),
-              labelText: 'Distance per Unit',
-              hintText: 'E.g., 15',
+            child: Consumer<FuelViewModel>(
+              builder: (_, viewModel, __) => EditStringWidget(
+                controlKey: Key('distancePerUnitField'),
+                controller: distancePerUnitController,
+                onChanged: (value) =>
+                    viewModel.distancePerUnit = double.tryParse(value),
+                labelText: 'Distance per Unit',
+                hintText: 'E.g., 15',
+              ),
             ),
           ),
           Padding(
             padding: EdgeInsets.only(top: _formDistance, bottom: _formDistance),
-            child: EditStringWidget(
-              controlKey: Key('priceField'),
-              controller: priceController,
-              onChanged: (value) => viewModel.price = double.tryParse(value),
-              labelText: 'Price',
-              hintText: 'E.g., 1.65',
+            child: Consumer<FuelViewModel>(
+              builder: (_, viewModel, __) => EditStringWidget(
+                controlKey: Key('priceField'),
+                controller: priceController,
+                onChanged: (value) => viewModel.price = double.tryParse(value),
+                labelText: 'Price',
+                hintText: 'E.g., 1.65',
+              ),
             ),
           ),
           Consumer<FuelViewModel>(
