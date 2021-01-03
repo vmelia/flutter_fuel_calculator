@@ -14,7 +14,6 @@ class FuelScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final viewModel = Provider.of<FuelViewModel>(context, listen: false);
     return Scaffold(
       appBar: AppBar(
         title: Text("Trip Cost Calculator"),
@@ -67,18 +66,20 @@ class FuelScreen extends StatelessWidget {
               key: Key('resultText'),
             ),
           ),
-          DropdownButton<String>(
-            key: Key('currencyDropdown'),
-            items: viewModel.currencies.map((String value) {
-              return DropdownMenuItem<String>(
-                value: value,
-                child: Text(value),
-              );
-            }).toList(),
-            value: viewModel.currency,
-            onChanged: (String value) {
-              viewModel.currency = value;
-            },
+          Consumer<FuelViewModel>(
+            builder: (_, viewModel, __) => DropdownButton<String>(
+              key: Key('currencyDropdown'),
+              items: viewModel.currencies.map((String value) {
+                return DropdownMenuItem<String>(
+                  value: value,
+                  child: Text(value),
+                );
+              }).toList(),
+              value: viewModel.currency,
+              onChanged: (String value) {
+                viewModel.currency = value;
+              },
+            ),
           ),
           Consumer<FuelViewModel>(
             builder: (_, viewModel, __) {
