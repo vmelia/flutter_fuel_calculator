@@ -36,6 +36,7 @@ void main() {
 
     setUp(() async {
       await enterTextall('');
+      //await widgetHelper.enterText(resultText, '');
     });
 
     test('Text fields initialize as empty', () async {
@@ -78,11 +79,6 @@ void main() {
     });
 
     Future<void> checkCurrency(String currency) async {
-      // Arrange.
-      await widgetHelper.enterText(distanceField, '123');
-      await widgetHelper.enterText(distancePerUnitField, '15');
-      await widgetHelper.enterText(priceField, '1.65');
-
       //Act.
       await driver.tap(currencyDropdown);
       await driver.tap(find.text(currency));
